@@ -139,7 +139,7 @@ from
     on BOMTB.TB001=tempBOMTA.变更单别
     and BOMTB.TB002=tempBOMTA.变更单号
     
-    where BOMTB.TB013='Y') as tempBOMTB
+    where BOMTB.TB012='Y') as tempBOMTB
 
 inner join BOMTC
 on BOMTC.TC001=tempBOMTB.变更单别
