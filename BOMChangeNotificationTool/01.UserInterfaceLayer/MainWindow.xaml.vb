@@ -158,16 +158,16 @@ on CMSMQ.MQ001=tempBOMTB.变更单别"
                                           .BGDH = $"{tmpSqlDataReader(1)}".Trim,
                                           .BGXH = $"{tmpSqlDataReader(2)}".Trim,
                                           .ZJPH = $"{tmpSqlDataReader(3)}".Trim,
-                                          .BOMIndexOld = $"{tmpSqlDataReader(4)}".Trim,
-                                          .YJPHOld = $"{tmpSqlDataReader(5)}".Trim,
-                                          .ZCYLOld = tmpSqlDataReader(6),
-                                          .CJWZOld = $"{tmpSqlDataReader(7)}".Trim,
-                                          .BZOld = $"{tmpSqlDataReader(8)}".Trim,
-                                          .BOMIndexNew = $"{tmpSqlDataReader(9)}".Trim,
-                                          .YJPHNew = $"{tmpSqlDataReader(10)}".Trim,
-                                          .ZCYLNew = tmpSqlDataReader(11),
-                                          .CJWZNew = $"{tmpSqlDataReader(12)}".Trim,
-                                          .BZNew = $"{tmpSqlDataReader(13)}".Trim
+                                          .BOMIndexNew = $"{tmpSqlDataReader(4)}".Trim,
+                                          .YJPHNew = $"{tmpSqlDataReader(5)}".Trim,
+                                          .ZCYLNew = tmpSqlDataReader(6),
+                                          .CJWZNew = $"{tmpSqlDataReader(7)}".Trim,
+                                          .BZNew = $"{tmpSqlDataReader(8)}".Trim,
+                                          .BOMIndexOld = $"{tmpSqlDataReader(9)}".Trim,
+                                          .YJPHOld = $"{tmpSqlDataReader(10)}".Trim,
+                                          .ZCYLOld = tmpSqlDataReader(11),
+                                          .CJWZOld = $"{tmpSqlDataReader(12)}".Trim,
+                                          .BZOld = $"{tmpSqlDataReader(13)}".Trim
                                           }
 
                                           ' 忽略发送过的
@@ -335,7 +335,7 @@ on CMSMQ.MQ001=tempMOCTA.工单单别"
 备注 : <font color=#1296DB>{doc.BZOld}</font> {If(doc.BZOld = doc.BZNew AndAlso doc.YJPHOld = doc.YJPHNew, "", $"-> <font color=#FF0000>{doc.BZNew}</font>")}  
 影响工单 :  
 {If(doc.GDItems.Count = 0,
-"无",
+"> 无",
 String.Join(vbCrLf, From item In doc.GDItems
                     Select $"> {item(0)} - {item(1)} - {item(2)}  "))}",
             .Title = $"{doc.BGDB} - {doc.BGDH}"
