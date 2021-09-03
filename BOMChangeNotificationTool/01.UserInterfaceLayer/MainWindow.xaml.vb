@@ -118,7 +118,10 @@ BOMTC.TC104 as 原BOM序号,
 BOMTC.TC105 as 原元件品号,
 BOMTC.TC108 as 原组成用量,
 BOMTC.TCC01 as 原插件位置,
-BOMTC.TC040 as 原备注
+BOMTC.TC040 as 原备注,
+INVMB.MB002 as 主件品名,
+INVMB1.MB002 as 元件品名,
+INVMB2.MB002 as 原元件品名
 
 from
     (select
@@ -133,7 +136,7 @@ from
         TA002 as 变更单号
 
         from BOMTA
-        where TA003='{AppSettingHelper.Instance.LastSearchDate:yyyyMMdd}') as tempBOMTA
+        where TA003>='{AppSettingHelper.Instance.LastSearchDate:yyyyMMdd}') as tempBOMTA
 
     inner join BOMTB
     on BOMTB.TB001=tempBOMTA.变更单别
@@ -147,7 +150,16 @@ and BOMTC.TC002=tempBOMTB.变更单号
 and BOMTC.TC003=tempBOMTB.变更序号
 
 left join CMSMQ
-on CMSMQ.MQ001=tempBOMTB.变更单别"
+on CMSMQ.MQ001=tempBOMTB.变更单别
+        
+left join INVMB
+on INVMB.MB001=tempBOMTB.主件品号
+
+left join INVMB as INVMB1
+on INVMB1.MB001=BOMTC.TC005
+
+left join INVMB as INVMB2
+on INVMB2.MB001=BOMTC.TC105"
 
                                   Using tmpSqlDataReader = tmpSqlCommand.ExecuteReader
 
@@ -167,7 +179,10 @@ on CMSMQ.MQ001=tempBOMTB.变更单别"
                                           .YJPHOld = $"{tmpSqlDataReader(10)}".Trim,
                                           .ZCYLOld = tmpSqlDataReader(11),
                                           .CJWZOld = $"{tmpSqlDataReader(12)}".Trim,
-                                          .BZOld = $"{tmpSqlDataReader(13)}".Trim
+                                          .BZOld = $"{tmpSqlDataReader(13)}".Trim,
+                                          .ZJPM = $"{tmpSqlDataReader(14)}".Trim,
+                                          .YJPMNew = $"{tmpSqlDataReader(15)}".Trim,
+                                          .YJPMOld = $"{tmpSqlDataReader(16)}".Trim
                                           }
 
                                           ' 忽略发送过的
@@ -328,8 +343,8 @@ on CMSMQ.MQ001=tempMOCTA.工单单别"
 
 ------
 变更操作 : {doc.OperationStr}  
-主件品号 : <font color=#1296DB>{doc.ZJPH}</font>  
-物料品号 : <font color=#1296DB>{doc.YJPHOld}</font> {If(doc.YJPHOld = doc.YJPHNew, "", $"-> <font color=#FF0000>{doc.YJPHNew}</font>")}  
+主件品号 : <font color=#1296DB>{doc.ZJPH} ({doc.ZJPM})</font>  
+物料品号 : <font color=#1296DB>{doc.YJPHOld} ({doc.YJPMOld})</font> {If(doc.YJPHOld = doc.YJPHNew, "", $"-> <font color=#FF0000>{doc.YJPHNew} ({doc.YJPMNew})</font>")}  
 组成用量 : <font color=#1296DB>{doc.ZCYLOld:n4}</font> {If(doc.ZCYLOld = doc.ZCYLNew AndAlso doc.YJPHOld = doc.YJPHNew, "", $"-> <font color=#FF0000>{doc.ZCYLNew:n4}</font>")}  
 插件位置 : <font color=#1296DB>{doc.CJWZOld}</font> {If(doc.CJWZOld = doc.CJWZNew AndAlso doc.YJPHOld = doc.YJPHNew, "", $"-> <font color=#FF0000>{doc.CJWZNew}</font>")}  
 备注 : <font color=#1296DB>{doc.BZOld}</font> {If(doc.BZOld = doc.BZNew AndAlso doc.YJPHOld = doc.YJPHNew, "", $"-> <font color=#FF0000>{doc.BZNew}</font>")}  

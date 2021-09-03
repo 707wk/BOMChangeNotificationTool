@@ -16,6 +16,10 @@
     ''' 主件品号
     ''' </summary>
     Public ZJPH As String
+    ''' <summary>
+    ''' 主件品名
+    ''' </summary>
+    Public ZJPM As String
 
     ''' <summary>
     ''' BOM序号(旧)
@@ -25,6 +29,10 @@
     ''' 元件品号(旧)
     ''' </summary>
     Public YJPHOld As String
+    ''' <summary>
+    ''' 元件品名(旧)
+    ''' </summary>
+    Public YJPMOld As String
     ''' <summary>
     ''' 组成用量(旧)
     ''' </summary>
@@ -46,6 +54,10 @@
     ''' 元件品号(新)
     ''' </summary>
     Public YJPHNew As String
+    ''' <summary>
+    ''' 元件品名(新)
+    ''' </summary>
+    Public YJPMNew As String
     ''' <summary>
     ''' 组成用量(新)
     ''' </summary>
