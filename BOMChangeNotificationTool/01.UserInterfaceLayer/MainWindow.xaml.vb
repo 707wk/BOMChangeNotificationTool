@@ -88,6 +88,11 @@ Class MainWindow
 
     Private Sub WorkFunction(sender As Object, e As RoutedEventArgs)
 
+        If AppSettingHelper.Instance.Sending Then
+            Exit Sub
+        End If
+        AppSettingHelper.Instance.Sending = True
+
         Dim tmpWindow As New Wangk.ResourceWPF.BackgroundWork(Me) With {
             .Title = "初始化"
         }
@@ -121,19 +126,22 @@ BOMTC.TCC01 as 原插件位置,
 BOMTC.TC040 as 原备注,
 INVMB.MB002 as 主件品名,
 INVMB1.MB002 as 元件品名,
-INVMB2.MB002 as 原元件品名
+INVMB2.MB002 as 原元件品名,
+tempBOMTB.变更原因
 
 from
     (select
     TB001 as 变更单别,
     TB002 as 变更单号,
     TB003 as 变更序号,
-    TB004 as 主件品号
+    TB004 as 主件品号,
+    tempBOMTA.变更原因
 
     from
         (select
         TA001 as 变更单别,
-        TA002 as 变更单号
+        TA002 as 变更单号,
+        TA005 as 变更原因
 
         from BOMTA
         where TA003>='{AppSettingHelper.Instance.LastSearchDate:yyyyMMdd}') as tempBOMTA
@@ -182,7 +190,8 @@ on INVMB2.MB001=BOMTC.TC105"
                                           .BZOld = $"{tmpSqlDataReader(13)}".Trim,
                                           .ZJPM = $"{tmpSqlDataReader(14)}".Trim,
                                           .YJPMNew = $"{tmpSqlDataReader(15)}".Trim,
-                                          .YJPMOld = $"{tmpSqlDataReader(16)}".Trim
+                                          .YJPMOld = $"{tmpSqlDataReader(16)}".Trim,
+                                          .ChangeReason = $"{tmpSqlDataReader(17)}".Trim
                                           }
 
                                           ' 忽略发送过的
@@ -265,6 +274,8 @@ on INVMB2.MB001=BOMTC.TC105"
 
                       End Sub)
 
+        AppSettingHelper.Instance.Sending = False
+
         If tmpWindow.Error IsNot Nothing Then
             Wangk.ResourceWPF.Toast.ShowError(Me, tmpWindow.Error.Message)
             Exit Sub
@@ -343,6 +354,7 @@ on CMSMQ.MQ001=tempMOCTA.工单单别"
 
 ------
 变更操作 : {doc.OperationStr}  
+变更原因 : {doc.ChangeReason}  
 主件品号 : <font color=#1296DB>{doc.ZJPH} ({doc.ZJPM})</font>  
 物料品号 : <font color=#1296DB>{doc.YJPHOld} ({doc.YJPMOld})</font> {If(doc.YJPHOld = doc.YJPHNew, "", $"-> <font color=#FF0000>{doc.YJPHNew} ({doc.YJPMNew})</font>")}  
 组成用量 : <font color=#1296DB>{doc.ZCYLOld:n4}</font> {If(doc.ZCYLOld = doc.ZCYLNew AndAlso doc.YJPHOld = doc.YJPHNew, "", $"-> <font color=#FF0000>{doc.ZCYLNew:n4}</font>")}  

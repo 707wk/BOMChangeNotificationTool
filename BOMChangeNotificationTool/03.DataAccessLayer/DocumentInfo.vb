@@ -22,6 +22,11 @@
     Public ZJPM As String
 
     ''' <summary>
+    ''' 变更原因
+    ''' </summary>
+    Public ChangeReason As String
+
+    ''' <summary>
     ''' BOM序号(旧)
     ''' </summary>
     Public BOMIndexOld As String

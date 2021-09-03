@@ -286,4 +286,10 @@ Public Class AppSettingHelper
     ''' </summary>
     Public SendDocumentIDItems As New HashSet(Of String)
 
+    ''' <summary>
+    ''' 发送中
+    ''' </summary>
+    <Newtonsoft.Json.JsonIgnore>
+    Public Sending As Boolean = False
+
 End Class
