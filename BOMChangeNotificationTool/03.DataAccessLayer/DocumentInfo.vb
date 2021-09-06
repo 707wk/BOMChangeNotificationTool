@@ -21,10 +21,10 @@
     ''' </summary>
     Public ZJPM As String
 
-    ''' <summary>
-    ''' 变更原因
-    ''' </summary>
-    Public ChangeReason As String
+    '''' <summary>
+    '''' 变更原因
+    '''' </summary>
+    'Public ChangeReason As String
 
     ''' <summary>
     ''' BOM序号(旧)
@@ -46,10 +46,10 @@
     ''' 插件位置(旧)
     ''' </summary>
     Public CJWZOld As String
-    ''' <summary>
-    ''' 备注(旧)
-    ''' </summary>
-    Public BZOld As String
+    '''' <summary>
+    '''' 备注(旧)
+    '''' </summary>
+    'Public BZOld As String
 
     ''' <summary>
     ''' BOM序号(新)
@@ -71,10 +71,10 @@
     ''' 插件位置(新)
     ''' </summary>
     Public CJWZNew As String
-    ''' <summary>
-    ''' 备注(新)
-    ''' </summary>
-    Public BZNew As String
+    '''' <summary>
+    '''' 备注(新)
+    '''' </summary>
+    'Public BZNew As String
 
     ''' <summary>
     ''' 受影响的工单列表,工单单别/工单单号/生产通知单号

@@ -182,16 +182,13 @@ on INVMB2.MB001=BOMTC.TC105"
                                           .YJPHNew = $"{tmpSqlDataReader(5)}".Trim,
                                           .ZCYLNew = tmpSqlDataReader(6),
                                           .CJWZNew = $"{tmpSqlDataReader(7)}".Trim,
-                                          .BZNew = $"{tmpSqlDataReader(8)}".Trim,
                                           .BOMIndexOld = $"{tmpSqlDataReader(9)}".Trim,
                                           .YJPHOld = $"{tmpSqlDataReader(10)}".Trim,
                                           .ZCYLOld = tmpSqlDataReader(11),
                                           .CJWZOld = $"{tmpSqlDataReader(12)}".Trim,
-                                          .BZOld = $"{tmpSqlDataReader(13)}".Trim,
                                           .ZJPM = $"{tmpSqlDataReader(14)}".Trim,
                                           .YJPMNew = $"{tmpSqlDataReader(15)}".Trim,
-                                          .YJPMOld = $"{tmpSqlDataReader(16)}".Trim,
-                                          .ChangeReason = $"{tmpSqlDataReader(17)}".Trim
+                                          .YJPMOld = $"{tmpSqlDataReader(16)}".Trim
                                           }
 
                                           ' 忽略发送过的
@@ -354,12 +351,10 @@ on CMSMQ.MQ001=tempMOCTA.工单单别"
 
 ------
 变更操作 : {doc.OperationStr}  
-变更原因 : {doc.ChangeReason}  
 主件品号 : <font color=#1296DB>{doc.ZJPH} ({doc.ZJPM})</font>  
 物料品号 : <font color=#1296DB>{doc.YJPHOld} ({doc.YJPMOld})</font> {If(doc.YJPHOld = doc.YJPHNew, "", $"-> <font color=#FF0000>{doc.YJPHNew} ({doc.YJPMNew})</font>")}  
 组成用量 : <font color=#1296DB>{doc.ZCYLOld:n4}</font> {If(doc.ZCYLOld = doc.ZCYLNew AndAlso doc.YJPHOld = doc.YJPHNew, "", $"-> <font color=#FF0000>{doc.ZCYLNew:n4}</font>")}  
 插件位置 : <font color=#1296DB>{doc.CJWZOld}</font> {If(doc.CJWZOld = doc.CJWZNew AndAlso doc.YJPHOld = doc.YJPHNew, "", $"-> <font color=#FF0000>{doc.CJWZNew}</font>")}  
-备注 : <font color=#1296DB>{doc.BZOld}</font> {If(doc.BZOld = doc.BZNew AndAlso doc.YJPHOld = doc.YJPHNew, "", $"-> <font color=#FF0000>{doc.BZNew}</font>")}  
 影响工单 :  
 {If(doc.GDItems.Count = 0,
 "> 无",
