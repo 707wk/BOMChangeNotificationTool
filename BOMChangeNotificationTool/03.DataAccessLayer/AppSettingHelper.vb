@@ -90,6 +90,11 @@ Public Class AppSettingHelper
                 Dim assemblyLocation = System.Reflection.Assembly.GetExecutingAssembly().Location
                 _instance._ProductVersion = System.Diagnostics.FileVersionInfo.GetVersionInfo(assemblyLocation).ProductVersion
 
+                ' 添加数据库
+                If Not File.Exists($"{System.Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Hunan Yestech\{My.Application.Info.ProductName}\Data\LocalDatabase.db") Then
+                    File.Copy("Data\LocalDatabase.db", $"{System.Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Hunan Yestech\{My.Application.Info.ProductName}\Data\LocalDatabase.db", True)
+                End If
+
             End If
 
             Return _instance
@@ -162,7 +167,7 @@ Public Class AppSettingHelper
     ''' </summary>
     Public Shared Sub ExportSettings(filePath As String)
 
-        '序列化
+        ' 序列化
         Using t As System.IO.StreamWriter = New System.IO.StreamWriter(
             filePath,
             False,
@@ -180,12 +185,12 @@ Public Class AppSettingHelper
     ''' </summary>
     Public Shared Sub ImportSettings(filePath As String)
 
-        '反序列化
+        ' 反序列化
         Dim tmpInstance = JsonConvert.DeserializeObject(Of AppSettingHelper)(
             System.IO.File.ReadAllText(filePath,
                                        System.Text.Encoding.UTF8))
 
-        '需要导入的变量
+        ' 需要导入的变量
 
         SaveToLocaltion()
 
@@ -250,10 +255,9 @@ Public Class AppSettingHelper
 #End Region
 
     ''' <summary>
-    ''' 输入历史
-    ''' </summary>
-    Public InputHistoryItems As New Dictionary(Of String, List(Of String)) From {
-    }
+    ''' 本地数据库地址
+    ''' </summary> 
+    Public Shared SQLiteConnection As String = $"data source= {System.Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Hunan Yestech\{My.Application.Info.ProductName}\Data\LocalDatabase.db"
 
     ''' <summary>
     ''' 开机启动
@@ -263,7 +267,18 @@ Public Class AppSettingHelper
     ''' <summary>
     ''' 上次搜索的时间
     ''' </summary>
-    Public LastSearchDate As Date = Now
+    <JsonIgnore>
+    Public Property LastSearchDate As Date
+        Get
+            Dim tmpValue = LocalDatabaseHelper.GetOption(Of Date?)(NameOf(LastSearchDate))
+            Return tmpValue.GetValueOrDefault(Now)
+        End Get
+
+        Set(value As Date)
+            LocalDatabaseHelper.SetOption(NameOf(LastSearchDate), value)
+        End Set
+
+    End Property
 
     ''' <summary>
     ''' ERP数据库连接字符串
@@ -278,18 +293,13 @@ Public Class AppSettingHelper
     ''' <summary>
     ''' 表单集合
     ''' </summary>
-    <Newtonsoft.Json.JsonIgnore>
+    <JsonIgnore>
     Public DocumentItems As New List(Of DocumentInfo)
-
-    ''' <summary>
-    ''' 已发送表单ID
-    ''' </summary>
-    Public SendDocumentIDItems As New HashSet(Of String)
 
     ''' <summary>
     ''' 发送中
     ''' </summary>
-    <Newtonsoft.Json.JsonIgnore>
+    <JsonIgnore>
     Public Sending As Boolean = False
 
 End Class

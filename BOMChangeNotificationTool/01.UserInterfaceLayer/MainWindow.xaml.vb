@@ -55,8 +55,6 @@ Class MainWindow
         SendTimer.Stop()
         RemoveHandler SendTimer.Elapsed, AddressOf SendTimerElapsed
 
-        AppSettingHelper.SaveToLocaltion()
-
         System.Windows.Application.Current.Shutdown()
 
         End
@@ -192,7 +190,7 @@ on INVMB2.MB001=BOMTC.TC105"
                                           }
 
                                           ' 忽略发送过的
-                                          If AppSettingHelper.Instance.SendDocumentIDItems.Contains(tmpDocumentInfo.KeyStr) Then
+                                          If LocalDatabaseHelper.IsDocumentSend(tmpDocumentInfo.KeyStr) Then
                                               Continue While
                                           End If
 
@@ -225,14 +223,13 @@ on INVMB2.MB001=BOMTC.TC105"
                           Now.Day <> AppSettingHelper.Instance.LastSearchDate.Day) AndAlso
                           AppSettingHelper.Instance.DocumentItems.Count = 0 Then
 
-                              AppSettingHelper.Instance.SendDocumentIDItems.Clear()
+                              LocalDatabaseHelper.ClearSendDocumentItems()
                               Analytics.TrackEvent("清空昨天的发送记录")
                               AppSettingHelper.Instance.Logger.Info("清空昨天的发送记录")
 
                           End If
 
                           AppSettingHelper.Instance.LastSearchDate = Now
-                          AppSettingHelper.SaveToLocaltion()
 #End Region
 
 #Region "发送群通知消息"
@@ -244,7 +241,7 @@ on INVMB2.MB001=BOMTC.TC105"
                               uie.Write($"发送群通知消息 {tmpID}/{AppSettingHelper.Instance.DocumentItems.Count}")
                               tmpID += 1
 
-                              AppSettingHelper.Instance.SendDocumentIDItems.Add(item.KeyStr)
+                              LocalDatabaseHelper.AddSendDocument(item.KeyStr)
 
                               ' 钉钉限制发送频率 20/min
                               Threading.Thread.Sleep(3000)
@@ -264,8 +261,6 @@ on INVMB2.MB001=BOMTC.TC105"
                                                                                         })}")
 
                           Next
-
-                          AppSettingHelper.SaveToLocaltion()
 
 #End Region
 
