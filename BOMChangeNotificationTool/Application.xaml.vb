@@ -1,5 +1,4 @@
 ﻿Imports System.Globalization
-Imports System.Threading
 Imports System.Windows.Threading
 Imports Microsoft.AppCenter
 Imports Microsoft.AppCenter.Analytics

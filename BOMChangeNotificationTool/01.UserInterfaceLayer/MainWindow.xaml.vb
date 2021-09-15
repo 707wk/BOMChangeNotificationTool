@@ -142,7 +142,8 @@ from
         TA005 as 变更原因
 
         from BOMTA
-        where TA003>='{AppSettingHelper.Instance.LastSearchDate:yyyyMMdd}') as tempBOMTA
+        where TA003>='{AppSettingHelper.Instance.LastSearchDate:yyyyMMdd}'
+        and TA006 not like '%不提醒%') as tempBOMTA
 
     inner join BOMTB
     on BOMTB.TB001=tempBOMTA.变更单别
