@@ -109,7 +109,6 @@
     <Compile Include="02.BusinessLogicLayer\UIHelper.vb" />
     <Compile Include="03.DataAccessLayer\AppSettingHelper.vb" />
     <Compile Include="03.DataAccessLayer\DocumentInfo.vb" />
-    <Compile Include="03.DataAccessLayer\Tool\AppCenterSparkle.vb" />
     <Compile Include="03.DataAccessLayer\Tool\FileHelper.vb" />
     <Compile Include="03.DataAccessLayer\Tool\LogHelper.vb" />
     <Compile Include="03.DataAccessLayer\Tool\StringHelper.vb" />
