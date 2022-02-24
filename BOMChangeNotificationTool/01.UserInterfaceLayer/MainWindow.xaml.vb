@@ -2,8 +2,6 @@
 Imports System.Timers
 Imports DingTalk.Api
 Imports DingTalk.Api.Request
-Imports DingTalk.Api.Response
-Imports Microsoft.AppCenter.Analytics
 
 Class MainWindow
 
@@ -12,9 +10,6 @@ Class MainWindow
     Private Sub Window_Loaded(sender As Object, e As RoutedEventArgs)
 
         Me.Title = $"{My.Application.Info.Title} V{AppSettingHelper.Instance.ProductVersion}"
-
-        Dim tmpAppCenterSparkle As New AppCenterSparkle(AppSettingHelper.AppKey, Me)
-        tmpAppCenterSparkle.CheckUpdateAsync()
 
         StartAutoRun.IsChecked = AppSettingHelper.Instance.StartAutoRun
 
@@ -41,7 +36,6 @@ Class MainWindow
     ''' </summary>
     Private Sub SendTimerElapsed(sender As Object, e As ElapsedEventArgs)
 
-        Analytics.TrackEvent("自动查找数据")
         AppSettingHelper.Instance.Logger.Info("自动查找数据")
 
         Me.Dispatcher.Invoke(Sub()
@@ -225,7 +219,6 @@ on INVMB2.MB001=BOMTC.TC105"
                           AppSettingHelper.Instance.DocumentItems.Count = 0 Then
 
                               LocalDatabaseHelper.ClearSendDocumentItems()
-                              Analytics.TrackEvent("清空昨天的发送记录")
                               AppSettingHelper.Instance.Logger.Info("清空昨天的发送记录")
 
                           End If
@@ -238,6 +231,8 @@ on INVMB2.MB001=BOMTC.TC105"
 
                           Dim tmpID = 1
                           For Each item In AppSettingHelper.Instance.DocumentItems
+
+                              LogHelper.LogEvent("发送群通知消息")
 
                               uie.Write($"发送群通知消息 {tmpID}/{AppSettingHelper.Instance.DocumentItems.Count}")
                               tmpID += 1
