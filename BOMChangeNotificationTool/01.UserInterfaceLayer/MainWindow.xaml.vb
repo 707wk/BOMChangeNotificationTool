@@ -287,16 +287,25 @@ on INVMB2.MB001=BOMTC.TC105"
         Dim tmplist As New List(Of String())
 
         Using tmpSqlCommand = SqlConn.CreateCommand
-            tmpSqlCommand.CommandText = $"select
+            tmpSqlCommand.CommandText = $"
+select
 rtrim(CMSMQ.MQ002)+'('+CMSMQ.MQ001+')' as 工单单别,
 tempMOCTA.工单单号,
-tempMOCTA.生产通知单号
+tempMOCTA.生产通知单号,
+RTRIM(CMSMV.MV002)+'('+ RTRIM(CMSMV.MV001) +')' as 业务人员
 
 from
     (select
     TA001 as 工单单别,
     TA002 as 工单单号,
-    UDF01 as 生产通知单号
+    UDF01 as 生产通知单号,
+    (select top 1
+    TC006
+
+    -- 客户订单单头信息档
+    from COPTC
+    where TC012=UDF01
+    ) as 业务人员
 
     from MOCTA
     where TA011 <> 'Y'
@@ -304,7 +313,11 @@ from
     and TA006='{ph}') as tempMOCTA
 
 left join CMSMQ
-on CMSMQ.MQ001=tempMOCTA.工单单别"
+on CMSMQ.MQ001=tempMOCTA.工单单别
+
+left join CMSMV
+on CMSMV.MV001=tempMOCTA.业务人员
+    "
 
             Using tmpSqlDataReader = tmpSqlCommand.ExecuteReader
 
@@ -313,7 +326,8 @@ on CMSMQ.MQ001=tempMOCTA.工单单别"
                     tmplist.Add({
                                 $"{tmpSqlDataReader(0)}",
                                 $"{tmpSqlDataReader(1)}",
-                                $"{tmpSqlDataReader(2)}"
+                                $"{tmpSqlDataReader(2)}",
+                                $"{tmpSqlDataReader(3)}"
                                 })
 
                 End While
@@ -350,7 +364,7 @@ on CMSMQ.MQ001=tempMOCTA.工单单别"
 {If(doc.GDItems.Count = 0,
 "> 无",
 String.Join(vbCrLf, From item In doc.GDItems
-                    Select $"> {item(0)} - {item(1)} - {item(2)}  "))}",
+                    Select $"> {item(0)} - {item(1)} - {item(2)} - {item(3)}  "))}",
             .Title = $"{doc.BGDB} - {doc.BGDH}"
         }
         req.Markdown_ = obj1

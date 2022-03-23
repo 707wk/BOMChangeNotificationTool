@@ -77,7 +77,7 @@
     'Public BZNew As String
 
     ''' <summary>
-    ''' 受影响的工单列表,工单单别/工单单号/生产通知单号
+    ''' 受影响的工单列表,工单单别/工单单号/生产通知单号/业务人员
     ''' </summary>
     Public GDItems As List(Of String())
 
