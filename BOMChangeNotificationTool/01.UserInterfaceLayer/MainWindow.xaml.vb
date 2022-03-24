@@ -304,20 +304,24 @@ from
 
     -- 客户订单单头信息档
     from COPTC
-    where TC012=UDF01
+    where COPTC.TC001=TA026
+    and COPTC.TC002=TA027
     ) as 业务人员
 
+    -- 工单单头档
     from MOCTA
     where TA011 <> 'Y'
     and TA011 <> 'y'
     and TA006='{ph}') as tempMOCTA
 
+-- 各系统单据设置档
 left join CMSMQ
 on CMSMQ.MQ001=tempMOCTA.工单单别
 
+-- 员工基本信息档
 left join CMSMV
 on CMSMV.MV001=tempMOCTA.业务人员
-    "
+"
 
             Using tmpSqlDataReader = tmpSqlCommand.ExecuteReader
 
